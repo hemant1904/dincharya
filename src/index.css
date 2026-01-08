@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Pastel minimalist palette (H S% L%) */
+    --background: 210 30% 98%; /* very light blue */
+    --foreground: 217 12% 14%; /* soft dark */
+
+    --card: 210 20% 100%;
+    --card-foreground: 217 12% 14%;
+
+    --primary: 260 60% 80%; /* pastel purple */
+    --primary-foreground: 260 40% 20%;
+
+    --secondary: 200 80% 95%; /* pastel sky */
+    --secondary-foreground: 217 12% 14%;
+
+    --accent: 28 90% 92%; /* soft peach */
+    --accent-foreground: 28 70% 18%;
+
+    --muted: 220 16% 94%;
+    --muted-foreground: 220 10% 55%;
+
+    --destructive: 0 75% 70%;
+    --destructive-foreground: 0 60% 20%;
+
+    --border: 220 14% 90%;
+    --input: 220 14% 94%;
+    --ring: 260 60% 65%;
+
+    --radius: 0.75rem;
+
+    /* gradients */
+    --bg-gradient-start: 260 80% 98%;
+    --bg-gradient-end: 200 90% 98%;
+    --card-gradient-start: 260 60% 98%;
+    --card-gradient-end: 200 80% 98%;
+
+    /* misc */
+    --shadow-soft: 0 8px 30px rgba(23, 32, 46, 0.06);
+    --shadow-strong: 0 12px 40px rgba(23, 32, 46, 0.08);
+    --footer-bg: 220 14% 96%;
+    --footer-foreground: 217 12% 14%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 220 14% 6%;
+    --foreground: 210 30% 96%;
+
+    --card: 220 14% 8%;
+    --card-foreground: 210 30% 96%;
+
+    --primary: 260 40% 65%;
+    --primary-foreground: 260 20% 95%;
+
+    --secondary: 217 20% 10%;
+    --secondary-foreground: 210 30% 96%;
+
+    --muted: 217 20% 12%;
+    --muted-foreground: 215 20% 65%;
+
+    --border: 217 20% 12%;
+    --input: 217 20% 12%;
+    --ring: 260 40% 70%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+    background-image: linear-gradient(135deg, hsl(var(--bg-gradient-start)), hsl(var(--bg-gradient-end)));
+    background-color: hsl(var(--background));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* Generic rounded card used across the app */
+  .card {
+    background: linear-gradient(180deg, hsl(var(--card-gradient-start) / 0.9), hsl(var(--card-gradient-end) / 0.95));
+    color: hsl(var(--card-foreground));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+
+  /* Soft primary button style for calls-to-action */
+  .btn-soft {
+    background: linear-gradient(90deg, hsl(var(--primary) / 0.95), hsl(var(--accent) / 0.95));
+    color: hsl(var(--primary-foreground));
+    padding: 0.6rem 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 6px 18px rgba(96, 72, 255, 0.08);
+    border: none;
+  }
+
+  /* Glassy backdrop for modal-like elements */
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    backdrop-filter: blur(6px);
+    border: 1px solid hsl(var(--border) / 0.5);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-strong);
+  }
+
+  .chat-input-container {
+    @apply rounded-xl p-3;
+    background: linear-gradient(180deg, hsl(var(--secondary) / 0.9), hsl(var(--card) / 0.95));
+    border: 1px solid hsl(var(--border) / 0.6);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .confirmation-card {
+    @apply rounded-lg p-6 text-center;
+    background: linear-gradient(180deg, hsl(var(--card) / 0.95), hsl(var(--secondary) / 0.98));
+    border-top: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .feature-card {
+    @apply text-center p-6;
+    background: linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--secondary) / 0.98));
+    border-radius: calc(var(--radius) + 4px);
+    border: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-strong);
+  }
+
+  .footer-section {
+    background: linear-gradient(180deg, hsl(var(--footer-bg) / 0.9), hsl(var(--card) / 0.98));
+    color: hsl(var(--footer-foreground));
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.45s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.42s ease-out forwards;
+  }
+
+  .animate-check-pop {
+    animation: checkPop 0.34s ease-out forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
