@@ -1,37 +1,72 @@
-/**
- * Validates and parses Gemini-generated schedule JSON
- */
+import { GeminiScheduleResponse } from "@/app/types/gemini";
 
-type Task = {
-  title: string;
-  startTime: string;
-  endTime: string;
-  category: string;
-};
+/* Helper: round current time to next hour */
+function getNextHour(): string {
+  const now = new Date();
+  now.setMinutes(0, 0, 0);
+  now.setHours(now.getHours() + 1);
+  return now.toTimeString().slice(0, 5); // HH:mm
+}
 
-export function parseGeminiSchedule(data: any): {
-  valid: boolean;
-  tasks?: Task[];
-  message?: string;
-} {
-  if (!data || typeof data !== "object") {
-    return { valid: false, message: "Invalid Gemini response format" };
-  }
+/* Helper: add 1 hour */
+function addOneHour(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  const d = new Date();
+  d.setHours(h, m, 0, 0);
+  d.setHours(d.getHours() + 1);
+  return d.toTimeString().slice(0, 5);
+}
 
-  if (!Array.isArray(data.tasks)) {
-    return { valid: false, message: "Tasks must be an array" };
-  }
+export function parseGeminiResponse(rawText: string): GeminiScheduleResponse {
+  try {
+    const cleaned = rawText
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
 
-  for (const task of data.tasks) {
-    if (
-      typeof task.title !== "string" ||
-      typeof task.startTime !== "string" ||
-      typeof task.endTime !== "string" ||
-      typeof task.category !== "string"
-    ) {
-      return { valid: false, message: "Invalid task structure detected" };
+    const json = JSON.parse(cleaned);
+
+    if (!Array.isArray(json.events)) {
+      throw new Error("Events missing");
     }
-  }
 
-  return { valid: true, tasks: data.tasks };
+    const today = new Date().toISOString().split("T")[0];
+
+    const events = json.events.map((e: any) => {
+      let date = e.date || today;
+
+      let startTime = e.startTime;
+      let endTime = e.endTime;
+
+      // 🚨 SAFETY: Fix missing or invalid times
+      if (!startTime || !/^\d{2}:\d{2}$/.test(startTime)) {
+        startTime = getNextHour();
+      }
+
+      if (!endTime || !/^\d{2}:\d{2}$/.test(endTime)) {
+        endTime = addOneHour(startTime);
+      }
+
+      return {
+        title: e.title || "Task",
+        description: e.description || "",
+        date,
+        startTime,
+        endTime,
+      };
+    });
+
+    return {
+      needsClarification: false,
+      events,
+    };
+  } catch (err) {
+    console.error("Gemini parse error:", rawText);
+
+    return {
+      needsClarification: true,
+      clarificationQuestion:
+        "Please clarify time, e.g. '10 pm today' or '3:30 am tomorrow'",
+    };
+  }
 }

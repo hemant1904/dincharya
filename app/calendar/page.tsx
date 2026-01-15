@@ -1,11 +1,18 @@
-"use client";
+/*"use client";
+import IntegratedDashboard from "@/components/IntegratedDashboard";
 
-import SpeechTextInput from "@/components/SpeechTextInput";
-
-export default function Home() {
+export default function CalendarPage() {
   return (
-    <div style={{ padding: 40 }}>
-      <SpeechTextInput />
+    <div>
+      <IntegratedDashboard />
+    </div>
+  );
+}
+*/
+export default function CalendarPage() {
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">Calendar Route Works</h1>
     </div>
   );
 }

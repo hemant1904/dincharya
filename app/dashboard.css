@@ -1,0 +1,77 @@
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 50px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.nav-links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.input-box input {
+  width: 50%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.confirm-card {
+  display: none;
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.why {
+  text-align: center;
+  padding: 80px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+footer {
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}

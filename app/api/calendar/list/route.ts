@@ -80,13 +80,29 @@ export async function GET(req: Request) {
       events,
     });
   } catch (err: any) {
+  console.error("Calendar API error:", err?.message || err);
+
+  // 🔐 Token expired or invalid
+  if (
+    err?.code === 401 ||
+    err?.message?.includes("Invalid Credentials") ||
+    err?.message?.includes("Unauthorized")
+  ) {
     return NextResponse.json(
       {
         status: "error",
-        message: "Server error",
-        details: err?.message ?? String(err),
+        message: "Session expired. Please login again.",
       },
-      { status: 500 }
+      { status: 401 }
     );
   }
+
+  return NextResponse.json(
+    {
+      status: "error",
+      message: "Calendar service error",
+    },
+    { status: 500 }
+  );
+}
 }

@@ -29,3 +29,44 @@ export function a1Range(sheetName: string, startRow: number, startCol: number, e
 export function appendRowPayload(row: unknown[]) {
   return buildValueRange([row]);
 }
+
+import { google } from "googleapis";
+
+type TaskRow = {
+  title: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
+export async function addTasksToSheet(
+  auth: any,
+  tasks: TaskRow[],
+  sheetName = "Sheet1"
+) {
+  const sheets = google.sheets({
+    version: "v4",
+    auth
+  });
+
+  const rows = tasks.map(task => [
+    task.title,
+    task.date,
+    task.startTime,
+    task.endTime,
+    "Pending"
+  ]);
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+    range: `${sheetName}!A:E`,
+    valueInputOption: "USER_ENTERED",
+    requestBody: {
+      values: rows
+    }
+  });
+
+  return {
+    added: rows.length
+  };
+}

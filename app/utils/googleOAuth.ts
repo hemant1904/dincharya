@@ -69,3 +69,37 @@ export async function exchangeCodeForTokens(code: string): Promise<TokenResponse
 
   return result
 }
+
+export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
+  const clientId = process.env.GOOGLE_CLIENT_ID
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET
+
+  if (!clientId || !clientSecret) {
+    return { error: "missing_env" }
+  }
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+  })
+
+  const resp = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString(),
+  })
+
+  const data = await resp.json()
+
+  if (!resp.ok) {
+    return { error: data.error, error_description: data.error_description }
+  }
+
+  return {
+    access_token: data.access_token,
+    expires_in: data.expires_in,
+    expiry_date: Date.now() + data.expires_in * 1000,
+  }
+}

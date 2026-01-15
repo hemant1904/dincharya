@@ -1,105 +1,60 @@
 import { NextResponse } from "next/server";
-import { google } from "googleapis";
-
-export const runtime = "nodejs";
-
-type CalendarEvent = {
-  title: string;
-  startTime: string;
-  endTime: string;
-};
-
-function readCookie(cookieHeader: string | null, name: string) {
-  if (!cookieHeader) return null;
-  const cookies = cookieHeader.split(";").map(c => c.trim());
-  for (const c of cookies) {
-    if (c.startsWith(name + "=")) {
-      return decodeURIComponent(c.substring(name.length + 1));
-    }
-  }
-  return null;
-}
+import { getAuthenticatedClient } from "@/app/utils/auth";
+import { createCalendarEvent } from "@/app/utils/calendarHelpers";
+import { calendar } from "googleapis/build/src/apis/calendar";
 
 export async function POST(req: Request) {
   try {
-    // 1️⃣ Parse body
-    const body = await req.json();
+    const { events } = await req.json();
 
-    if (!body || !Array.isArray(body.events)) {
+    if (!Array.isArray(events) || events.length === 0) {
       return NextResponse.json(
-        { status: "error", message: "Invalid request body" },
+        { error: "No events provided" },
         { status: 400 }
       );
     }
 
-    const events: CalendarEvent[] = body.events;
+    // 1️⃣ Get authenticated Google client
+    const authClient = await getAuthenticatedClient();
 
-    // 2️⃣ Read token cookie SAFELY
-    const cookieHeader = req.headers.get("cookie");
-    const tokenRaw = readCookie(cookieHeader, "google_tokens");
-
-    if (!tokenRaw) {
-      return NextResponse.json(
-        { status: "error", message: "Not authenticated (cookie missing)" },
-        { status: 401 }
-      );
-    }
-
-    let access_token: string | undefined;
-    try {
-      access_token = JSON.parse(tokenRaw).access_token;
-    } catch {
-      return NextResponse.json(
-        { status: "error", message: "Invalid token cookie" },
-        { status: 400 }
-      );
-    }
-
-    if (!access_token) {
-      return NextResponse.json(
-        { status: "error", message: "Access token missing" },
-        { status: 401 }
-      );
-    }
-
-    // 3️⃣ Google Calendar client
-    const auth = new google.auth.OAuth2();
-    auth.setCredentials({ access_token });
-
-    const calendar = google.calendar({ version: "v3", auth });
-
-    // 4️⃣ Create events
+    // 2️⃣ Create multiple events
     const createdEvents = [];
+    const cal = calendar({ version: "v3", auth: authClient });
 
-    for (const ev of events) {
-      const res = await calendar.events.insert({
+    for (const e of events) {
+      const res = await cal.events.insert({
         calendarId: "primary",
         requestBody: {
-          summary: ev.title,
-          start: { dateTime: ev.startTime },
-          end: { dateTime: ev.endTime },
+          summary: e.title,
+          description: e.description || "",
+          start: {
+            dateTime: `${e.date}T${e.startTime}:00`,
+            timeZone: "Asia/Kolkata",
+          },
+          end: {
+            dateTime: `${e.date}T${e.endTime}:00`,
+            timeZone: "Asia/Kolkata",
+          },
         },
       });
 
       createdEvents.push({
-        id: res.data.id,
-        htmlLink: res.data.htmlLink,
-        summary: ev.title,
+        ...e,
+        calendarEventId: res.data.id, // ⭐ IMPORTANT
       });
     }
 
+    // 3️⃣ Success response
     return NextResponse.json({
       status: "ok",
-      createdEvents,
+      createdCount: createdEvents.length,
+      events: createdEvents
     });
-  } catch (err: any) {
-    console.error("Calendar backend error:", err);
+
+  } catch (error) {
+    console.error("Calendar create error:", error);
     return NextResponse.json(
-      {
-        status: "error",
-        message: "Calendar creation failed",
-        details: err?.message ?? String(err),
-      },
+      { error: "Failed to create calendar events" },
       { status: 500 }
     );
   }
