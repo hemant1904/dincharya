@@ -1,8 +1,35 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  // 🔐 Check auth state from backend
+  useEffect(() => {
+    fetch("/api/me")
+      .then((res) => (res.ok ? res.json() : { authenticated: false }))
+      .then((data) => {
+        setAuthenticated(data.authenticated && !data.expired);
+        setLoading(false);
+      })
+      .catch(() => {
+        setAuthenticated(false);
+        setLoading(false);
+      });
+  }, []);
+
+  function handleSignin() {
+    window.location.href = "/api/auth/google";
+  }
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout");
+    window.location.href = "/";
+  }
+
   return (
     <nav
       style={{
@@ -24,16 +51,8 @@ export default function Header() {
           gap: "0px",
           textDecoration: "none",
           cursor: "pointer",
-          transition: "transform 0.2s ease",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "translateY(-1px)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
         }}
       >
-        {/* Logo */}
         <div
           style={{
             width: "80px",
@@ -52,15 +71,11 @@ export default function Header() {
           />
         </div>
 
-        {/* Brand text */}
         <span
           style={{
             fontWeight: 700,
             fontSize: "20px",
             color: "#4f46e5",
-            letterSpacing: "0.2px",
-            lineHeight: 1,
-            transition: "color 0.2s ease",
           }}
         >
           दिनचर्या
@@ -71,13 +86,31 @@ export default function Header() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <NavLink href="/#why" label="Why Us" />
         <NavLink href="/#about" label="About Us" />
-        <NavLink href="/api/auth/logout" label="Logout" />
+
+        {/* 🔐 AUTH BUTTON */}
+        {!loading && (
+          authenticated ? (
+            <button
+              onClick={handleLogout}
+              style={authButtonStyle("#ef4444")}
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={handleSignin}
+              style={authButtonStyle("#4f46e5")}
+            >
+              Sign In
+            </button>
+          )
+        )}
       </div>
     </nav>
   );
 }
 
-/* 🔹 Reusable Nav Link with Hover */
+/* 🔹 Reusable Nav Link */
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <a
@@ -88,20 +121,24 @@ function NavLink({ href, label }: { href: string; label: string }) {
         color: "#4f46e5",
         fontSize: "14px",
         fontWeight: 500,
-        position: "relative",
-        cursor: "pointer",
-        transition: "all 0.2s ease",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.color = "#4338ca";
-        e.currentTarget.style.transform = "translateY(-1px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.color = "#4f46e5";
-        e.currentTarget.style.transform = "translateY(0)";
       }}
     >
       {label}
     </a>
   );
+}
+
+/* 🔹 Auth Button Style */
+function authButtonStyle(bg: string) {
+  return {
+    marginLeft: 22,
+    padding: "8px 16px",
+    borderRadius: 8,
+    background: bg,
+    color: "white",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: 600,
+  } as React.CSSProperties;
 }
