@@ -1,109 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🌿 Dincharya – AI Powered Daily Planner
+Dincharya is an AI-powered smart daily planner that helps users plan their day intelligently, maintain consistency, and improve productivity & well-being.
 
-## Getting Started
+🚀 Why Dincharya?
 
-First, run the development server:
+In today’s fast-paced life, people struggle with:
 
-```bash
+Poor time management
+
+Inconsistent routines
+
+Missed deadlines & tasks
+
+Mental fatigue
+
+Dincharya solves this by combining AI + habit planning + smart reminders in one platform.
+
+✨ Key Features
+
+🧠 AI-Based Daily Planning
+
+📅 Google Calendar Integration
+
+🔔 Smart Notifications & Reminders
+
+📊 Habit & Schedule Tracking
+
+😊 Mood & Energy Logging
+
+🔐 Google OAuth Authentication
+
+🌐 Deployed on Vercel
+
+🖼️ Project Preview
+4
+
+(Replace these with your own screenshots later for maximum impact)
+
+🧩 How Dincharya Works (Flow)
+
+1️⃣ User signs in using Google Authentication
+2️⃣ User enters tasks, habits, and priorities
+3️⃣ AI processes input and generates a smart daily schedule
+4️⃣ Events sync automatically with Google Calendar
+5️⃣ User receives context-aware reminders & alerts
+
+🏗️ Technical Architecture
+4
+Tech Stack
+
+Frontend: Next.js (App Router), Tailwind CSS
+
+Backend: Next.js API Routes
+
+Authentication: Google OAuth 2.0
+
+APIs: Google Calendar API
+
+Deployment: Vercel
+
+🔮 Future Scope
+
+📈 Scalable User Base
+
+Extend beyond students to:
+
+Corporate employees
+
+Entrepreneurs
+
+Executives & CEOs
+
+Event & wedding planners
+
+🔔 Advanced Smart Notifications
+
+Context-aware reminders before exams, meetings, or deadlines
+
+😊 Well-being & Mood Analytics
+
+Personalized schedule suggestions based on energy levels
+
+📱 Mobile App Integration
+
+Android / iOS version for wider reach
+
+🛠️ Installation & Setup
+git clone https://github.com/hemant1904/dincharya.git
+cd dincharya
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Make sure to configure .env.local with Google OAuth credentials.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+👨‍💻 Developer
 
-## Learn More
+Hemant Gandepatil
+🎓 BE AI & DS | SPPU
+🚀 Passionate about AI, productivity tools & real-world problem solving
 
-To learn more about Next.js, take a look at the following resources:
+⭐ If you like this project, don’t forget to star the repository! ⭐
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4️⃣ Add REAL Screenshots (Very Important 🔥)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Do this next:
 
-## Deploy on Vercel
+Take screenshots of:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Home page
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Welcome to your Lovable project
+Login / Google Sign-in
 
-## Project info
+Planner / Dashboard
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Put them inside:
 
-## How can I edit this code?
+public/screenshots/
 
-There are several ways of editing your application.
 
-**Use Lovable**
+Replace image section with:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+![Dashboard](public/screenshots/dashboard.png)
 
-Changes made via Lovable will be committed automatically to this repo.
 
-**Use your preferred IDE**
+This makes your repo 10x more impressive.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+5️⃣ Optional (But Powerful Add-ons)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+✅ Add badges (Top of README)
 
-Follow these steps:
+![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js)
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-black)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+📌 Add a demo video link
 
-# Step 3: Install the necessary dependencies.
-npm i
+📄 Add .env.example
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+🧪 Add sample test data
