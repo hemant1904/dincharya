@@ -15,31 +15,19 @@ export async function GET(req: Request) {
 
     const tokens = await exchangeCodeForTokens(code);
 
-    const access_token = tokens.access_token;
-    const refresh_token = tokens.refresh_token;
-    const expires_in = tokens.expires_in as number;
-
-    const expires_at = Date.now() + expires_in * 1000;
-
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      req.headers.get("origin") ||
-      "http://localhost:3000";
+    const { access_token, refresh_token, expires_in } = tokens;
+    const expires_at = Date.now() + (expires_in as number) * 1000;
 
     const response = NextResponse.redirect(
-      `${baseUrl}/auth/success`
+      new URL("/auth/success", process.env.NEXT_PUBLIC_BASE_URL!)
     );
 
     response.cookies.set(
       "google_tokens",
-      JSON.stringify({
-        access_token,
-        refresh_token,
-        expires_at,
-      }),
+      JSON.stringify({ access_token, refresh_token, expires_at }),
       {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "lax",
         path: "/",
         maxAge: 60 * 60 * 24 * 7,
@@ -47,8 +35,8 @@ export async function GET(req: Request) {
     );
 
     return response;
-  } catch (error) {
-    console.error("OAuth Callback Error:", error);
+  } catch (err) {
+    console.error("OAuth Callback Error:", err);
     return NextResponse.json(
       { error: "Google OAuth failed" },
       { status: 500 }

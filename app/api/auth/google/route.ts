@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const redirectUri =
-    process.env.GOOGLE_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback/google`;
-
   const params = new URLSearchParams({
     client_id: process.env.GOOGLE_CLIENT_ID!,
-    redirect_uri: redirectUri,
+    redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
     response_type: "code",
     access_type: "offline",
     prompt: "consent",
