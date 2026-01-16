@@ -1,1 +1,1 @@
-export { default } from "@/component/voiceinput";
+export { default } from "@/components/VoiceInput";

@@ -5,7 +5,7 @@ function getNextHour(): string {
   const now = new Date();
   now.setMinutes(0, 0, 0);
   now.setHours(now.getHours() + 1);
-  return now.toTimeString().slice(0, 5); // HH:mm
+  return now.toTimeString().slice(0, 5);
 }
 
 /* Helper: add 1 hour */
@@ -17,6 +17,7 @@ function addOneHour(time: string): string {
   return d.toTimeString().slice(0, 5);
 }
 
+/* ✅ PURE PARSER FUNCTION */
 export function parseGeminiResponse(rawText: string): GeminiScheduleResponse {
   try {
     const cleaned = rawText
@@ -33,12 +34,9 @@ export function parseGeminiResponse(rawText: string): GeminiScheduleResponse {
     const today = new Date().toISOString().split("T")[0];
 
     const events = json.events.map((e: any) => {
-      let date = e.date || today;
-
       let startTime = e.startTime;
       let endTime = e.endTime;
 
-      // 🚨 SAFETY: Fix missing or invalid times
       if (!startTime || !/^\d{2}:\d{2}$/.test(startTime)) {
         startTime = getNextHour();
       }
@@ -50,7 +48,7 @@ export function parseGeminiResponse(rawText: string): GeminiScheduleResponse {
       return {
         title: e.title || "Task",
         description: e.description || "",
-        date,
+        date: e.date || today,
         startTime,
         endTime,
       };
@@ -62,11 +60,10 @@ export function parseGeminiResponse(rawText: string): GeminiScheduleResponse {
     };
   } catch (err) {
     console.error("Gemini parse error:", rawText);
-
     return {
       needsClarification: true,
       clarificationQuestion:
-        "Please clarify time, e.g. '10 pm today' or '3:30 am tomorrow'",
+        "Please clarify the time (e.g. 6pm today or 9am tomorrow)",
     };
   }
 }
