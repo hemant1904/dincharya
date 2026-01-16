@@ -1,140 +1,72 @@
-🌿 Dincharya – AI Powered Daily Planner
-Dincharya is an AI-powered smart daily planner that helps users plan their day intelligently, maintain consistency, and improve productivity & well-being.
+🌿 Dincharya
+AI-powered daily planning system focused on structure, consistency, and execution
 
-🚀 Why Dincharya?
 
-In today’s fast-paced life, people struggle with:
+🧠 What is Dincharya?
+Dincharya is a web-based productivity system designed to convert user intent (tasks, habits, priorities) into a structured, time-bound daily plan.
 
-Poor time management
+It focuses on:
+1.reducing decision fatigue
+2.enforcing routine consistency
+3.integrating planning directly with real calendars
 
-Inconsistent routines
 
-Missed deadlines & tasks
+🎯 What Problem It Solves
+-Most users fail at productivity because:
+-plans are disconnected from calendars
+-reminders are generic, not contextual
+-routines are inconsistent
+-planning is manual and repetitive
 
-Mental fatigue
 
-Dincharya solves this by combining AI + habit planning + smart reminders in one platform.
 
-✨ Key Features
+🔧 What This Project Includes (No Fluff)
 
-🧠 AI-Based Daily Planning
+This project currently implements the following:
+1.Google OAuth–based authentication
+2.User-specific session handling
+3.Task and habit input pipeline
+4.AI-assisted daily schedule generation
+5.Google Calendar event creation & sync
+6.Habit and schedule persistence
 
-📅 Google Calendar Integration
 
-🔔 Smart Notifications & Reminders
 
-📊 Habit & Schedule Tracking
+                                                        🧩 Core Functional Flow
+                                                              User Input
+                                                                 ↓
+                                                       Task & Habit Processing
+                                                                 ↓
+                                                         AI Schedule Generation
+                                                                 ↓
+                                                          Google Calendar Sync
+                                                                 ↓
+                                                        Daily Execution + Tracking
+  
+🛠️ Tech Stack (Actual Usage)
 
-😊 Mood & Energy Logging
+-Framework: Next.js (App Router)
+-Language: TypeScript
+-Styling: Tailwind CSS
+-Authentication: Google OAuth 2.0
+-APIs: Google Calendar API
+-Deployment: Vercel
 
-🔐 Google OAuth Authentication
 
-🌐 Deployed on Vercel
 
-🖼️ Project Preview
-4
-
-(Replace these with your own screenshots later for maximum impact)
-
-🧩 How Dincharya Works (Flow)
-
-1️⃣ User signs in using Google Authentication
-2️⃣ User enters tasks, habits, and priorities
-3️⃣ AI processes input and generates a smart daily schedule
-4️⃣ Events sync automatically with Google Calendar
-5️⃣ User receives context-aware reminders & alerts
-
-🏗️ Technical Architecture
-4
-Tech Stack
-
-Frontend: Next.js (App Router), Tailwind CSS
-
-Backend: Next.js API Routes
-
-Authentication: Google OAuth 2.0
-
-APIs: Google Calendar API
-
-Deployment: Vercel
-
-🔮 Future Scope
-
-📈 Scalable User Base
-
-Extend beyond students to:
-
-Corporate employees
-
-Entrepreneurs
-
-Executives & CEOs
-
-Event & wedding planners
-
-🔔 Advanced Smart Notifications
-
-Context-aware reminders before exams, meetings, or deadlines
-
-😊 Well-being & Mood Analytics
-
-Personalized schedule suggestions based on energy levels
-
-📱 Mobile App Integration
-
-Android / iOS version for wider reach
-
-🛠️ Installation & Setup
+⚙️ Local Setup
 git clone https://github.com/hemant1904/dincharya.git
 cd dincharya
 npm install
 npm run dev
+Runs on http://localhost:3000
 
+👤 Developers Team
 
-Make sure to configure .env.local with Google OAuth credentials.
-
-👨‍💻 Developer
-
+Avani Bhartiya
+Nidhi Dhamnaskar
+Sylvester Gard
 Hemant Gandepatil
-🎓 BE AI & DS | SPPU
-🚀 Passionate about AI, productivity tools & real-world problem solving
+No exaggerated claims
 
-⭐ If you like this project, don’t forget to star the repository! ⭐
-
-4️⃣ Add REAL Screenshots (Very Important 🔥)
-
-Do this next:
-
-Take screenshots of:
-
-Home page
-
-Login / Google Sign-in
-
-Planner / Dashboard
-
-Put them inside:
-
-public/screenshots/
-
-
-Replace image section with:
-
-![Dashboard](public/screenshots/dashboard.png)
-
-
-This makes your repo 10x more impressive.
-
-5️⃣ Optional (But Powerful Add-ons)
-
-✅ Add badges (Top of README)
-
-![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js)
-![Vercel](https://img.shields.io/badge/Deployed-Vercel-black)
-
-
-📌 Add a demo video link
-
-📄 Add .env.example
-
-🧪 Add sample test data
+This is exactly how senior GitHub profiles write READMEs.
