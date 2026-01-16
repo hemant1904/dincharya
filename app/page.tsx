@@ -75,6 +75,15 @@ export default function Dashboard() {
   }
 
   async function handlePlan() {
+    // 🔒 REQUIRE GOOGLE LOGIN BEFORE USING FEATURES
+    const isLoggedIn = document.cookie.includes("auth=true");
+
+    if (!isLoggedIn) {
+      alert("Please sign in with Google to use Dincharya features.");
+      return;
+    }
+
+    // ⬇️ EXISTING LOGIC (UNCHANGED)
     if (!text.trim() || loading) return;
 
     setLoading(true);
@@ -136,7 +145,6 @@ export default function Dashboard() {
         })
       );
 
-
       setModalText("Your schedule is ready!");
 
       setTimeout(() => {
@@ -148,6 +156,7 @@ export default function Dashboard() {
       setError("Something went wrong");
     }
   }
+
 
   return (
     <div style={{ background: "#eaeefa", minHeight: "100vh" }}>
@@ -248,6 +257,22 @@ export default function Dashboard() {
         >
           Plan My Day
         </button>
+        <button
+          onClick={() => window.location.href = "/api/auth/google"}
+          style={{
+            marginTop: 14,
+            padding: "12px 30px",
+            borderRadius: 8,
+            background: "white",
+            color: "#140c47",
+            border: "1px solid #d0d7ff",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          🔐 Sign up with Google
+        </button>
+
 
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
