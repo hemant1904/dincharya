@@ -60,17 +60,17 @@ export default function Dashboard() {
     recognitionRef.current = recognition;
   }, []);
   useEffect(() => {
-    fetch("/api/me")
-      .then((res) => res.ok ? res.json() : { authenticated: false })
-      .then((data) => {
-        setAuthenticated(data.authenticated && !data.expired);
-        setAuthChecked(true);
-      })
-      .catch(() => {
-        setAuthenticated(false);
-        setAuthChecked(true);
-      });
-  }, []);
+  fetch("/api/me")
+    .then((res) => res.ok ? res.json() : { authenticated: false })
+    .then((data) => {
+      setAuthenticated(data.authenticated && !data.expired);
+      setAuthChecked(true);
+    })
+    .catch(() => {
+      setAuthenticated(false);
+      setAuthChecked(true);
+    });
+}, []);
 
 
   function toggleMic() {
@@ -91,11 +91,12 @@ export default function Dashboard() {
 
   async function handlePlan() {
     // 🔒 REQUIRE GOOGLE LOGIN BEFORE USING FEATURES
-    if (!authenticated) {
+    const isLoggedIn = document.cookie.includes("auth=true");
+
+    if (!isLoggedIn) {
       alert("Please sign in with Google to use Dincharya features.");
       return;
     }
-
 
     // ⬇️ EXISTING LOGIC (UNCHANGED)
     if (!text.trim() || loading) return;
@@ -257,24 +258,20 @@ export default function Dashboard() {
           />
         </div>
 
-        {authChecked && (
-      <button
-        onClick={handlePlan}
-        className="pop-hover"
-        style={{
-          marginTop: 20,
-          padding: "12px 30px",
-          background: authenticated ? "#4f46e5" : "#9ca3af",
-          color: "white",
-          borderRadius: 8,
-          border: "none",
-          cursor: authenticated ? "pointer" : "not-allowed",
-        }}
-      >
-        Plan My Day
-      </button>
-    )}
-
+        <button
+          onClick={handlePlan}
+          className="pop-hover"
+          style={{
+            marginTop: 20,
+            padding: "12px 30px",
+            background: "#4f46e5",
+            color: "white",
+            borderRadius: 8,
+            border: "none",
+          }}
+        >
+          Plan My Day
+        </button>
 
 
         {error && <p style={{ color: "red" }}>{error}</p>}
