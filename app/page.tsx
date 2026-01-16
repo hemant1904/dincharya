@@ -21,6 +21,8 @@ export default function Dashboard() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   // Voice
   const [listening, setListening] = useState(false);
@@ -57,6 +59,19 @@ export default function Dashboard() {
 
     recognitionRef.current = recognition;
   }, []);
+  useEffect(() => {
+    fetch("/api/me")
+      .then((res) => res.ok ? res.json() : { authenticated: false })
+      .then((data) => {
+        setAuthenticated(data.authenticated && !data.expired);
+        setAuthChecked(true);
+      })
+      .catch(() => {
+        setAuthenticated(false);
+        setAuthChecked(true);
+      });
+  }, []);
+
 
   function toggleMic() {
     if (listening) {
@@ -76,12 +91,11 @@ export default function Dashboard() {
 
   async function handlePlan() {
     // 🔒 REQUIRE GOOGLE LOGIN BEFORE USING FEATURES
-    const isLoggedIn = document.cookie.includes("auth=true");
-
-    if (!isLoggedIn) {
+    if (!authenticated) {
       alert("Please sign in with Google to use Dincharya features.");
       return;
     }
+
 
     // ⬇️ EXISTING LOGIC (UNCHANGED)
     if (!text.trim() || loading) return;
@@ -243,35 +257,24 @@ export default function Dashboard() {
           />
         </div>
 
-        <button
-          onClick={handlePlan}
-          className="pop-hover"
-          style={{
-            marginTop: 20,
-            padding: "12px 30px",
-            background: "#4f46e5",
-            color: "white",
-            borderRadius: 8,
-            border: "none",
-          }}
-        >
-          Plan My Day
-        </button>
-        <button
-          onClick={() => window.location.href = "/api/auth/google"}
-          style={{
-            marginTop: 14,
-            padding: "12px 30px",
-            borderRadius: 8,
-            background: "white",
-            color: "#140c47",
-            border: "1px solid #d0d7ff",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
-        >
-          🔐 Sign up with Google
-        </button>
+        {authChecked && (
+      <button
+        onClick={handlePlan}
+        className="pop-hover"
+        style={{
+          marginTop: 20,
+          padding: "12px 30px",
+          background: authenticated ? "#4f46e5" : "#9ca3af",
+          color: "white",
+          borderRadius: 8,
+          border: "none",
+          cursor: authenticated ? "pointer" : "not-allowed",
+        }}
+      >
+        Plan My Day
+      </button>
+    )}
+
 
 
         {error && <p style={{ color: "red" }}>{error}</p>}
