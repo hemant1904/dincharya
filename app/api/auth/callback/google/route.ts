@@ -21,8 +21,13 @@ export async function GET(req: Request) {
 
     const expires_at = Date.now() + expires_in * 1000;
 
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      req.headers.get("origin") ||
+      "http://localhost:3000";
+
     const response = NextResponse.redirect(
-      new URL("/auth/success", req.url)
+      `${baseUrl}/auth/success`
     );
 
     response.cookies.set(
