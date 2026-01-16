@@ -88,20 +88,33 @@ export default function Dashboard() {
     setShowModal(false);
     setLoading(false);
   }
+  async function ensureAuthenticated(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/me");
+      if (!res.ok) return false;
+
+      const data = await res.json();
+      return data.authenticated && !data.expired;
+    } catch {
+      return false;
+    }
+  }
+
+
 
   async function handlePlan() {
-    if (!authChecked) {
-      alert("Checking authentication, please try again.");
-      return;
-    }
+   
+    if (!text.trim() || loading) return;
 
-    if (!authenticated) {
+    const isAuthed = await ensureAuthenticated();
+    if (!isAuthed) {
       alert("Please sign in with Google to use Dincharya features.");
       return;
     }
 
+  // ⬇️ EXISTING LOGIC CONTINUES
 
-    // ⬇️ EXISTING LOGIC (UNCHANGED)
+   // ⬇️ EXISTING LOGIC (UNCHANGED)
     if (!text.trim() || loading) return;
 
     setLoading(true);
